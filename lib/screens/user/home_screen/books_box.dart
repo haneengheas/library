@@ -31,8 +31,8 @@ class BooksBox extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => BookDetails(
-                            icon: Icons.add,
-                          )));
+                                icon: Icons.add,
+                              )));
                 },
                 child: Column(
                   children: [

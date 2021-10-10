@@ -52,7 +52,7 @@ class PasswordRecovery extends StatelessWidget {
                 children: [
                   Textbuton("تسجيل دخول", onTap: () {
                     Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => LogInScreen()));
+                        MaterialPageRoute(builder: (context) => LogInScreen(submitAuthForm)));
                   }),
                 ],
               ),
