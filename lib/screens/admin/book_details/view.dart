@@ -4,10 +4,11 @@ import 'package:library_guide/constant/styles.dart';
 import 'package:library_guide/screens/admin/book_details/book_cover.dart';
 import 'package:library_guide/screens/admin/book_details/comments_item.dart';
 import 'package:library_guide/screens/admin/book_details/input_text.dart';
+import 'package:library_guide/screens/user/home_screen/add_comment.dart';
 
 class BookDetails extends StatefulWidget {
-  const BookDetails({Key? key}) : super(key: key);
-
+  final IconData icon;
+  BookDetails({required this.icon});
   @override
   _BookDetailsState createState() => _BookDetailsState();
 }
@@ -19,16 +20,16 @@ class _BookDetailsState extends State<BookDetails> {
       backgroundColor: white,
       body: Directionality(
         textDirection: TextDirection.rtl,
-        child: Column(
+        child: ListView(
           children: [
             SizedBox(
               height: sizeFromHeight(context, 8),
             ),
             Center(
                 child: Text(
-              'عرض تفاصيل الكتاب',
-              style: labelStyle,
-            )),
+                  'عرض تفاصيل الكتاب',
+                  style: labelStyle,
+                )),
             SizedBox(
               height: 35,
             ),
@@ -77,8 +78,10 @@ class _BookDetailsState extends State<BookDetails> {
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: purple,
-        onPressed: () {},
-        child: Icon(Icons.edit),
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> AddComment()));
+        },
+        child: Icon(widget.icon),
       ),
     );
   }

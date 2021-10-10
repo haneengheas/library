@@ -10,8 +10,8 @@ class DisplaybookItem extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Container(
         height: 70,
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
           color: white,
           boxShadow: [BoxShadow(color: white, blurRadius: 6)],
@@ -25,13 +25,19 @@ class DisplaybookItem extends StatelessWidget {
               'اسم الكتاب',
               style: appbarStyle,
             ),
-            SizedBox(
-              width: sizeFromWidth(context, 3.2),
+            Expanded(
+              child: SizedBox(
+                width: sizeFromWidth(context, 2),
+              ),
             ),
             EditButton(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => BookDetails()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BookDetails(
+                            icon: Icons.edit,
+                          )));
                 },
                 image: 'edit'),
             EditButton(
