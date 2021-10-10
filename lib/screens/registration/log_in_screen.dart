@@ -7,7 +7,6 @@ import 'package:library_guide/screens/user/navigation.dart';
 import 'package:library_guide/widgets/button/flatbuton.dart';
 import 'package:library_guide/widgets/button/textbuton.dart';
 import 'package:library_guide/widgets/input_field_regeist.dart';
-import 'package:library_guide/widgets/logo.dart';
 
 class LogInScreen extends StatefulWidget {
   final void Function (String email, String password, BuildContext context, bool islogin) submitAuth;
@@ -24,9 +23,7 @@ class _LogInScreenState extends State<LogInScreen> {
   void submit(
       String email, String password,BuildContext context, bool islogin) async {
 
-    try {
-
-      UserCredential userCredential = await auth
+    try {UserCredential userCredential = await auth
           .createUserWithEmailAndPassword(
         email: email,
         password: password,
