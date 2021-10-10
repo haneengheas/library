@@ -51,8 +51,8 @@ class PasswordRecovery extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Textbuton("تسجيل دخول", onTap: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => LogInScreen(submitAuthForm)));
+                    // Navigator.pushReplacement(context,
+                    //     MaterialPageRoute(builder: (context) => LogInScreen(submitAuthForm)));
                   }),
                 ],
               ),

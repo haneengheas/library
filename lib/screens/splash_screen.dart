@@ -15,14 +15,15 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   final auth = FirebaseAuth.instance;
 
-  void submitAuthForm(
-      String email, String password, BuildContext context, bool islogin) async {
+  void submitAuth(
+      String email, String password,BuildContext context, bool islogin) async {
 
     try {
       UserCredential userCredential = await auth
           .createUserWithEmailAndPassword(
-              email: email,
-              password: password );
+        email: email,
+        password: password,
+      );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -34,11 +35,14 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
+
+
+
   @override
   void initState() {
     Timer(Duration(seconds: 10), () {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LogInScreen(submitAuthForm)));
+          context, MaterialPageRoute(builder: (context) => LogInScreen(submitAuth)));
     });
 
     super.initState();

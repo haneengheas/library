@@ -7,10 +7,8 @@ import 'package:library_guide/widgets/input_field_regeist.dart';
 import 'package:library_guide/widgets/logo.dart';
 
 class SignInScreen extends StatefulWidget {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
-
+  final void Function(String email, String password,BuildContext context, bool islogin) submit;
+  SignInScreen(this.submit);
   @override
   _SignInScreenState createState() => _SignInScreenState();
 }
@@ -21,7 +19,10 @@ class _SignInScreenState extends State<SignInScreen> {
   validateForm() {
     print('aa');
     if (_formKey.currentState!.validate()) {
-      print('login');
+      _formKey.currentState!.save();
+      widget.submit(email,password,context,isLogin);
+      print(email);
+      print(password);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Category()));
     } else {
@@ -31,9 +32,10 @@ class _SignInScreenState extends State<SignInScreen> {
 
   // final _auth = FirebaseAuth.instance;
   // bool modal_progress_hud = false;
-  late String email;
-  late String password;
-  late String name;
+  String email='';
+  String password='';
+  String name='';
+  bool isLogin=true;
 
   @override
   Widget build(BuildContext context) {
@@ -61,20 +63,20 @@ class _SignInScreenState extends State<SignInScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  InputFieldRegist(
-
-                    hint: "ادخل اسمك",
-                    label: " الاسم ",
-                    scure: false,
-                    validator: (value) {
-                      name = value;
-                      if (value!.isEmpty) {
-                        return 'برجاءادخال الاسم';
-                      } else if (value.length < 5) {
-                        return 'برجاء كتابه الاسم بشكل صحيح';
-                      }
-                    }, onSaved: (){},
-                  ),
+                  // InputFieldRegist(
+                  //
+                  //   hint: "ادخل اسمك",
+                  //   label: " الاسم ",
+                  //   scure: false,
+                  //   validator: (value) {
+                  //     name = value;
+                  //     if (value!.isEmpty) {
+                  //       return 'برجاءادخال الاسم';
+                  //     } else if (value.length < 5) {
+                  //       return 'برجاء كتابه الاسم بشكل صحيح';
+                  //     }
+                  //   }, onSaved: (){},
+                  // ),
                   InputFieldRegist(
                     onSaved: (){},
                     hint: "ادخل البريد الالكتروني",
@@ -103,20 +105,20 @@ class _SignInScreenState extends State<SignInScreen> {
                       }
                     },
                   ),
-                  InputFieldRegist(
-                    onSaved: (){},
-                    hint: "أكد كلمة مرورك",
-                    label: "تأكيد كلمة المرور ",
-                    scure: true,
-                    validator: (value) {
-
-                      if (value!.isEmpty) {
-                        return 'برجاء كتابه كلمة المرور بشكل صحيح';
-                      } else if (value.length < 5) {
-                        return 'برجاء كتابه كلمة المرور بشكل صحيح';
-                      }
-                    },
-                  ),
+                  // InputFieldRegist(
+                  //   onSaved: (){},
+                  //   hint: "أكد كلمة مرورك",
+                  //   label: "تأكيد كلمة المرور ",
+                  //   scure: true,
+                  //   validator: (value) {
+                  //
+                  //     if (value!.isEmpty) {
+                  //       return 'برجاء كتابه كلمة المرور بشكل صحيح';
+                  //     } else if (value.length < 5) {
+                  //       return 'برجاء كتابه كلمة المرور بشكل صحيح';
+                  //     }
+                  //   },
+                  // ),
                 ],
               )),
           SizedBox(height: 20),
@@ -126,7 +128,9 @@ class _SignInScreenState extends State<SignInScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Textbuton('سجل دخول', onTap: ()  {}
+              Textbuton('سجل دخول', onTap: ()  {
+                validateForm();
+              }
               ),
               Text(
                 'هل لديك حساب بالفعل ؟',

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:library_guide/constant/styles.dart';
 import 'package:library_guide/screens/registration/password_recovery.dart';
@@ -9,16 +10,38 @@ import 'package:library_guide/widgets/input_field_regeist.dart';
 import 'package:library_guide/widgets/logo.dart';
 
 class LogInScreen extends StatefulWidget {
-  final void Function (String email, String password, BuildContext context, bool islogin) submitAuthForm;
+  final void Function (String email, String password, BuildContext context, bool islogin) submitAuth;
 
-  LogInScreen(this.submitAuthForm);
-
+  LogInScreen(this.submitAuth);
 
   @override
   _LogInScreenState createState() => _LogInScreenState();
 }
 
 class _LogInScreenState extends State<LogInScreen> {
+  final auth = FirebaseAuth.instance;
+
+  void submit(
+      String email, String password,BuildContext context, bool islogin) async {
+
+    try {
+      UserCredential userCredential = await auth
+          .createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
 
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -27,7 +50,7 @@ class _LogInScreenState extends State<LogInScreen> {
     print('aa');
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      widget.submitAuthForm(email,password,context,isLogin);
+      widget.submitAuth(email,password,context,isLogin);
       print(email);
       print(password);
       Navigator.push(
@@ -126,7 +149,7 @@ class _LogInScreenState extends State<LogInScreen> {
             'إنشاء حساب',
             onTap: () {
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => SignInScreen()));
+                  MaterialPageRoute(builder: (context) => SignInScreen(submit)));
             },
           ),
           SizedBox(
@@ -138,7 +161,9 @@ class _LogInScreenState extends State<LogInScreen> {
           ),
         ],
       ),
-      Buton("تسجيل دخول", onTap: () {}),
+      Buton("تسجيل دخول", onTap: () {
+        validateForm();
+      }),
         ],
       ),
     );
