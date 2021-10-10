@@ -25,6 +25,7 @@ class _LogInScreenState extends State<LogInScreen> {
       String email, String password,BuildContext context, bool islogin) async {
 
     try {
+
       UserCredential userCredential = await auth
           .createUserWithEmailAndPassword(
         email: email,
@@ -50,9 +51,8 @@ class _LogInScreenState extends State<LogInScreen> {
     print('aa');
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      widget.submitAuth(email,password,context,isLogin);
-      print(email);
-      print(password);
+      widget.submitAuth(email.trim(),password.trim(),context,isLogin);
+
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => NavigationScreen()));
     } else {
@@ -72,9 +72,9 @@ class _LogInScreenState extends State<LogInScreen> {
       body: ListView(
           children: [
           SizedBox(height: 35),
-      Logo(
-        height: 140,
-      ),
+      // Logo(
+      //   height: 140,
+      // ),
       SizedBox(
         height: 30,
       ),
