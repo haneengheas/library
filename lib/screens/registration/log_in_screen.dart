@@ -9,17 +9,25 @@ import 'package:library_guide/widgets/input_field_regeist.dart';
 import 'package:library_guide/widgets/logo.dart';
 
 class LogInScreen extends StatefulWidget {
+  final void Function (String email, String password, BuildContext context, bool islogin) submitAuthForm;
+
+  LogInScreen(this.submitAuthForm);
+
+
   @override
   _LogInScreenState createState() => _LogInScreenState();
 }
 
 class _LogInScreenState extends State<LogInScreen> {
+
+
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   validateForm() {
     print('aa');
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      widget.submitAuthForm(email,password,context,isLogin);
       print(email);
       print(password);
       Navigator.push(
@@ -39,115 +47,98 @@ class _LogInScreenState extends State<LogInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
-        children: [
+          children: [
           SizedBox(height: 35),
-          Logo(
-            height: 140,
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          Center(
-              child: Text(
-                'تسجيل الدخول',
-                style: labelStyle,
-              )),
-          SizedBox(
-            height: 20,
-            //d
-          ),
-          Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  InputFieldRegist(
-                    hint: 'ادخل البريد الالكتروني',
-                    label: 'البريد الالكتروني',
-                    scure: false,
-                    validator: (value) {
-                      email = value;
-                      if (value!.isEmpty) {
-                        return 'برجاء كتابه البريد الالكتروني بشكل صحيح';
-                      } else if (value.toString().contains('@')) {
-                        return 'يجب ان يحتوي البريد الالكتروني علي @';
-                      }
-                    },
-                    onSaved: (value) {
-                      email = value;
-                    },
-                  ),
-                  InputFieldRegist(
-                    hint: 'ادخل كلمة المرور',
-                    label: 'كلمة المرور',
-                    scure: true,
-                    validator: (value) {
-                      password = value;
-                      if (value!.isEmpty) {
-                        return 'برجاء كتابه كلمة المرور بشكل صحيح';
-                      } else if (value.length < 5) {
-                        return 'يجب ان نكون كلمة المرور تحتوي علي الاقل من خمس ارقام';
-                      }
-                    },
-                    onSaved: (value) {
-                      password = value;
-                    },
-                  ),
-                ],
-              )),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Textbuton('هل نسيت كلمة المرور', onTap: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PasswordRecovery()));
-                })
-              ],
-            ),
-          ),
-          SizedBox(
-            height: sizeFromHeight(context, 20),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+      Logo(
+        height: 140,
+      ),
+      SizedBox(
+        height: 30,
+      ),
+      Center(
+          child: Text(
+            'تسجيل الدخول',
+            style: labelStyle,
+          )),
+      SizedBox(
+        height: 20,
+        //d
+      ),
+      Form(
+          key: _formKey,
+          child: Column(
             children: [
-              Textbuton(
-                'إنشاء حساب',
-                onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => SignInScreen()));
+              InputFieldRegist(
+                hint: 'ادخل البريد الالكتروني',
+                label: 'البريد الالكتروني',
+                scure: false,
+                validator: (value) {
+                  email = value;
+                  if (value!.isEmpty) {
+                    return 'برجاء كتابه البريد الالكتروني بشكل صحيح';
+                  } else if (value.toString().contains('@')) {
+                    return 'يجب ان يحتوي البريد الالكتروني علي @';
+                  }
+                },
+                onSaved: (value) {
+                  email = value;
                 },
               ),
-              SizedBox(
-                height: sizeFromHeight(context, 12),
-              ),
-              Text(
-                'ليس لديك حساب ؟',
-                style: hintStyle,
+              InputFieldRegist(
+                hint: 'ادخل كلمة المرور',
+                label: 'كلمة المرور',
+                scure: true,
+                validator: (value) {
+                  password = value;
+                  if (value!.isEmpty) {
+                    return 'برجاء كتابه كلمة المرور بشكل صحيح';
+                  } else if (value.length < 5) {
+                    return 'يجب ان نكون كلمة المرور تحتوي علي الاقل من خمس ارقام';
+                  }
+                },
+                onSaved: (value) {
+                  password = value;
+                },
               ),
             ],
+          )),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Textbuton('هل نسيت كلمة المرور', onTap: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PasswordRecovery()));
+            })
+          ],
+        ),
+      ),
+      SizedBox(
+        height: sizeFromHeight(context, 20),
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Textbuton(
+            'إنشاء حساب',
+            onTap: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => SignInScreen()));
+            },
           ),
-          Buton("تسجيل دخول", onTap: () async {
-            // setState(() {
-            //   // modal_progress_hud = true;
-            // });
-            // try {
-            //   final userLog = await _auth.signInWithEmailAndPassword(
-            //       email: email, password: password);
-            //   if (userLog != null) {
-            //     validateForm();
-            //   }
-            //   setState(() {
-            //     // modal_progress_hud = false;
-            //   });
-            // } catch (e) {
-            //   print(e);
-            // }
-            // print('00');
-          }),
+          SizedBox(
+            height: sizeFromHeight(context, 12),
+          ),
+          Text(
+            'ليس لديك حساب ؟',
+            style: hintStyle,
+          ),
+        ],
+      ),
+      Buton("تسجيل دخول", onTap: () {}),
         ],
       ),
     );
