@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:library_guide/constant/styles.dart';
@@ -7,8 +8,19 @@ import 'package:library_guide/widgets/button/textbuton.dart';
 import 'package:library_guide/widgets/input_field.dart';
 import 'package:library_guide/widgets/logo.dart';
 
-class SignInScreen extends StatelessWidget {
+class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
+  final _auth = FirebaseAuth.instance;
+
+  late String email;
+  late String password;
+  late String name;
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +49,12 @@ class SignInScreen extends StatelessWidget {
           InputField(
               hint: "ادخل البريد الالكتروني",
               label: "البريد الالكتروني ",
-              scure: false),
+              scure: false, ),
           // SizedBox(
           //   height: sizeFromHeight(context, 20),
           // ),
           InputField(
-              hint: "ادخل كلمة مرور", label: "كلمة المرور ", scure: true),
+              hint: "ادخل كلمة مرور", label: "كلمة المرور ", scure: true, ),
           // SizedBox(
           //   height: sizeFromHeight(context, 20),
           // ),
@@ -52,13 +64,34 @@ class SignInScreen extends StatelessWidget {
             height: sizeFromHeight(context, 12),
           ),
           Buton('تسجيل', onTap: () {
+
+
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => Category()));
           }),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Textbuton('سجل دخول', onTap: () {}),
+              Textbuton('سجل دخول', onTap: () async {
+                print(email);
+                print(password);
+
+                try {
+                  final newuser = await _auth.createUserWithEmailAndPassword(
+                      email: email, password: password);
+                  if (newuser
+                      .toString()
+                      .isNotEmpty) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Category()));
+                    print(newuser);
+                  }
+                } catch (e) {
+                  print(e);
+                  print("eroooooooooooooooooor");
+                }
+              }),
               Text(
                 'هل لديك حساب بالفعل ؟',
                 style: hintStyle,
